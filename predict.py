@@ -12,7 +12,7 @@ def create_ctr_model(stats: pd.DataFrame) -> LinearRegression:
     model = LinearRegression()
     texts = stats["Text"]
     tfidf = vectorizer.fit_transform(texts)
-    model.fit(tfidf, stats["meta_CTR"])
+    model.fit(tfidf, stats["Clicks"])
     return model
     
 def predict_ctr(model: LinearRegression, registry: dict, url: str) -> float:

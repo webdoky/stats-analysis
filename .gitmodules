@@ -1,3 +1,6 @@
 [submodule "content"]
 	path = content
 	url = git@github.com:mdn/content.git
+[submodule "translated-content"]
+	path = translated-content
+	url = git@github.com:webdoky/content.git
