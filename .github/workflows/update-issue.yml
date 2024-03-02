@@ -1,5 +1,5 @@
 jobs:
-  job:
+  get-analytics:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -7,11 +7,41 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.10"
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install -r requirements.txt
+          pip3 install -r ./get-analytics/requirements.txt
+      - env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+        name: Get analytics
+        run: |
+          python3 ./get-analytics/script.py
+      - name: Save results
+        uses: actions/upload-artifact@v4
+        with:
+          name: analytics
+          path: ./_Pages.json
+
+  predict:
+    needs: [get-analytics]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get analytics
+        uses: actions/download-artifact@v4
+        with:
+          name: analytics
+          path: ./_Pages.json
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ./predict/requirements.txt
       - name: Checkout content
         uses: actions/checkout@v3
         with:
@@ -22,12 +52,39 @@ jobs:
         with:
           repository: webdoky/content
           path: translated-content
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
-        name: Update issue
+          depth: 0
+      - name: Predict
         run: |
-          python3 script.py
+          python3 ./predict/run.py
+      - name: Save results
+        uses: actions/upload-artifact@v4
+        with:
+          name: predictions
+          path: ./_Prediction.json
+  edit-issue:
+    needs: [predict]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ./edit-issue/requirements.txt
+      - name: Get predictions
+        uses: actions/download-artifact@v4
+        with:
+          name: predictions
+          path: ./_Prediction.json
+      - name: Edit issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 ./edit-issue/run.py
 name: Update issue
 on:
   push:

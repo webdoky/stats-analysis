@@ -36,34 +36,35 @@ credentials = service_account.Credentials.from_service_account_file(
 # Getting analytics from Google
 searchConsoleClient = build('webmasters', 'v3', credentials=credentials)
 
-def get_analytics():
 
-    endTimestamp = datetime.now().timestamp() - aWeek
-    print('endTimestamp', endTimestamp)
-    startTimestamp = endTimestamp - target_period
-    print('startTimestamp', startTimestamp)
+endTimestamp = datetime.now().timestamp() - aWeek
+print('endTimestamp', endTimestamp)
+startTimestamp = endTimestamp - target_period
+print('startTimestamp', startTimestamp)
 
-    response = searchConsoleClient.searchanalytics().query(
-        siteUrl='sc-domain:webdoky.org',
-        body={
-            'startDate': getYYYYMMDD(datetime.fromtimestamp(startTimestamp)),
-            'endDate': getYYYYMMDD(datetime.fromtimestamp(endTimestamp)),
-            'dimensions': ['PAGE']
-        }).execute()
-    print(response)
+response = searchConsoleClient.searchanalytics().query(
+    siteUrl='sc-domain:webdoky.org',
+    body={
+        'startDate': getYYYYMMDD(datetime.fromtimestamp(startTimestamp)),
+        'endDate': getYYYYMMDD(datetime.fromtimestamp(endTimestamp)),
+        'dimensions': ['PAGE']
+    }).execute()
+print(response)
 
-    records = response.get('rows', [])
+records = response.get('rows', [])
 
-    # Processing and saving analytics data
-    weights = []
-    # overallClicksSum = sum(record['clicks'] for record in records)
+# Processing and saving analytics data
+weights = []
+# overallClicksSum = sum(record['clicks'] for record in records)
 
-    for record in records:
-        keys, clicks = record['keys'], record['clicks']
-        for url in keys:
-            weights.append({
-                'URL': stripDomainFromUrl(url),
-                'Clicks': clicks
-            })
-    
-    return weights
+for record in records:
+    keys, clicks = record['keys'], record['clicks']
+    for url in keys:
+        weights.append({
+            'URL': stripDomainFromUrl(url),
+            'Clicks': clicks
+        })
+
+# Save to file
+with open('./_Pages.json', 'w') as f:
+    f.write(json.dumps(weights))
