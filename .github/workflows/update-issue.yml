@@ -3,7 +3,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -16,7 +16,7 @@ jobs:
           GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
         name: Get analytics
         run: |
-          python3 ./get-analytics/script.py
+          python3 ./get-analytics/run.py
       - name: Save results
         uses: actions/upload-artifact@v4
         with:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get analytics
         uses: actions/download-artifact@v4
         with:
@@ -43,12 +43,12 @@ jobs:
           python3 -m pip install --upgrade pip
           pip3 install -r ./predict/requirements.txt
       - name: Checkout content
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: mdn/content
           path: content
       - name: Checkout translated-content
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: webdoky/content
           path: translated-content
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
