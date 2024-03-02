@@ -8,12 +8,11 @@ from create_registry import create_registry
 from get_analytics import get_analytics
 from get_initial_slugs import get_initial_slugs
 from predict import create_ctr_model, predict_ctr
-from save_to_github import  check_github, save_to_github
+from save_to_github import  save_to_github
 
 THREE_MONTHS_AGO = str(datetime.now() - timedelta(days=90))
 
 def run():
-    check_github()
     registry = create_registry()
 
     analytics = get_analytics()

@@ -9,19 +9,8 @@ if os.getenv('GITHUB_TOKEN') is None:
 
 auth = Auth.Token(os.getenv('GITHUB_TOKEN'))
 
-# DISCUSSION_ID = 2858
-DISCUSSION_ID = 2860
+DISCUSSION_ID = 1
 table_header = "| URL | Clicks |\n| --- | --- |"
-
-def check_github():
-    try:
-        try:
-            gh = Github(auth=auth)
-        except:
-            raise Exception('Invalid access token')
-        gh.get_repo('webdoky/content').get_issue(DISCUSSION_ID)
-    except:
-        raise Exception('No discussion with the given ID found')
 
 def get_markdown(weights):
     print(weights)
@@ -29,7 +18,7 @@ def get_markdown(weights):
 
 def save_to_github(weights):
     with Github(auth=auth) as gh:
-        repo = gh.get_repo('webdoky/content')
+        repo = gh.get_repo('webdoky/stats-analysis')
         discussion = repo.get_issue(DISCUSSION_ID)
         discussion.edit(body=get_markdown(weights))
     # gh.close()
