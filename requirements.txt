@@ -1,3 +1,7 @@
+google
+google-api-python-client
 markdown
 pandas ~= 2.2
+PyGithub ~= 2.2
+python-dotenv ~= 1.0
 scikit_learn ~= 1.4
