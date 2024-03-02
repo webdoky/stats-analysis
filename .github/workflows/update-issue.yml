@@ -79,7 +79,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: predictions
-          path: ./_Prediction.json
+          path: .
       - name: Edit issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
