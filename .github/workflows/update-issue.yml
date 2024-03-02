@@ -33,7 +33,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: analytics
-          path: ./_Pages.json
+          path: .
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
