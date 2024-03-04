@@ -82,7 +82,7 @@ jobs:
           path: .
       - name: Edit issue
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATS_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 ./edit-issue/run.py
 name: Update issue
