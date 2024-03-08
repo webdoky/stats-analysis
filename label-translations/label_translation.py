@@ -7,11 +7,11 @@ LABELS = ['Criticality: zero', 'Criticality: low',
 
 
 def get_label(popularity: float) -> str:
-    if popularity < 10:
+    if popularity < 100:
         return LABELS[0]
-    elif popularity < 100:
-        return LABELS[1]
     elif popularity < 1000:
+        return LABELS[1]
+    elif popularity < 10000:
         return LABELS[2]
     else:
         return LABELS[3]
