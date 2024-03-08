@@ -1,6 +1,7 @@
 from io import StringIO
 from markdown import Markdown
 
+
 def unmark_element(element, stream=None):
     if stream is None:
         stream = StringIO()
@@ -12,9 +13,11 @@ def unmark_element(element, stream=None):
         stream.write(element.tail)
     return stream.getvalue()
 
+
 Markdown.output_formats["plain"] = unmark_element
 __md = Markdown(output_format="plain")
 __md.stripTopLevelTags = False
+
 
 def markdown_to_text(markdown: str) -> str:
     return __md.convert(markdown)

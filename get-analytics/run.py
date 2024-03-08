@@ -9,17 +9,22 @@ GOOGLE_KEY = os.getenv('GOOGLE_KEY')
 keyFile = './key.json'
 scopes = ['https://www.googleapis.com/auth/webmasters.readonly']
 
+
 def getYYYYMMDD(date):
     return date.strftime("%Y-%m-%d")
+
 
 aWeek = timedelta(days=7).total_seconds()
 target_period = timedelta(days=30*3).total_seconds()
 
+
 def fileExists(path):
     return os.path.isfile(path)
 
+
 def stripDomainFromUrl(url):
     return url.replace('https?:\/\/[^/]+', '').replace('/$', '')
+
 
 if not GOOGLE_KEY:
     if not fileExists(keyFile):
@@ -47,7 +52,8 @@ response = searchConsoleClient.searchanalytics().query(
     body={
         'startDate': getYYYYMMDD(datetime.fromtimestamp(startTimestamp)),
         'endDate': getYYYYMMDD(datetime.fromtimestamp(endTimestamp)),
-        'dimensions': ['PAGE']
+        'dimensions': ['PAGE'],
+        'metrics': ['engagedSessions']
     }).execute()
 print(response)
 
@@ -55,14 +61,13 @@ records = response.get('rows', [])
 
 # Processing and saving analytics data
 weights = []
-# overallClicksSum = sum(record['clicks'] for record in records)
 
 for record in records:
-    keys, clicks = record['keys'], record['clicks']
+    keys, impressions = record['keys'], record['impressions']
     for url in keys:
         weights.append({
             'URL': stripDomainFromUrl(url),
-            'Clicks': clicks
+            'Impressions': impressions
         })
 
 # Save to file

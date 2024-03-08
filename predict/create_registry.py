@@ -4,6 +4,7 @@ import glob
 from is_slug_in import is_slug_in
 from markdown_to_text import markdown_to_text
 
+
 def create_registry() -> dict:
     print('create_registry')
     registry = {}
@@ -19,4 +20,3 @@ def create_registry() -> dict:
         registry[slug] = text
     print('create_registry done')
     return registry
-    

@@ -16,5 +16,6 @@ for filepath in markdown_glob:
     registry[slug] = get_file_creation_date(filepath)
 print('creation date init done')
 
+
 def get_creation_date(slug: str) -> str | None:
     return registry[slug] if slug in registry else None

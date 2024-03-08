@@ -14,7 +14,7 @@ auth = Auth.Token(os.getenv('CONTENT_GITHUB_TOKEN'))
 
 with Github(auth=auth) as gh:
     repo = gh.get_repo('webdoky/content')
-    translation_pull_requests = (pull for pull in repo.get_pulls(state='open', base='master') if pull.title.startswith("translation"))
+    translation_pull_requests = (pull for pull in repo.get_pulls(
+        state='open', base='master') if pull.title.startswith("translation"))
     for translation_pull_request in translation_pull_requests:
         label_translation(translation_pull_request)
-    

@@ -21,13 +21,13 @@ stats = pd.DataFrame(analytics)
 adjust_stats(registry, stats)
 stats = stats[stats["Date"] < THREE_MONTHS_AGO]
 model = create_ctr_model(stats)
-stats.sort_values(by="Clicks", ascending=False, inplace=True)
+stats.sort_values(by="Impressions", ascending=False, inplace=True)
 initial_slugs = get_initial_slugs()
 # stats.to_csv('./stats/_Pages.csv', index=False)
 # print(predict_ctr(model, registry, "https://webdoky.org/uk/docs/Web/CSS/actual_value/"))
 
 # Create an empty pandas DataFrame
-predicted_stats = pd.DataFrame(columns=["URL", "Clicks"])
+predicted_stats = pd.DataFrame(columns=["URL", "Impressions"])
 
 # Read Markdown filepaths in ./content/files into list
 # markdown_glob = glob.glob('./content/files/**/*.md', recursive=True)
@@ -39,12 +39,13 @@ for slug in registry:
     # frontmatter = open(filepath).read().split("---")[1]
     # slug = frontmatter.split("slug: ")[1].split("\n")[0]
     prediction = predict_ctr(model, registry, slug)
-    
-    # print(f"URL: {slug}, CTR: {prediction}")
-    
-    predicted_stats = pd.concat([predicted_stats, pd.DataFrame([{"URL": slug, "Clicks": prediction}])], ignore_index=True)
 
-predicted_stats.sort_values(by="Clicks", ascending=False, inplace=True)
+    # print(f"URL: {slug}, CTR: {prediction}")
+
+    predicted_stats = pd.concat([predicted_stats, pd.DataFrame(
+        [{"URL": slug, "Impressions": prediction}])], ignore_index=True)
+
+predicted_stats.sort_values(by="Impressions", ascending=False, inplace=True)
 # Save to JSON
 predicted_stats.to_json('./_Prediction.json', orient="records")
 # predicted_stats.to_csv('./stats/_PredictedPages.csv', index=False)

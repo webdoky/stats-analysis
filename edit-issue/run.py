@@ -12,11 +12,13 @@ if os.getenv('STATS_GITHUB_TOKEN') is None:
 auth = Auth.Token(os.getenv('STATS_GITHUB_TOKEN'))
 
 ISSUE_ID = 1
-table_header = "| URL | Clicks |\n| --- | --- |"
+table_header = "| URL | Impressions |\n| --- | --- |"
+
 
 def get_markdown(weights):
     print(weights[0])
-    return table_header + "\n" + "\n".join((f"| https://developer.mozilla.org/en-us/docs/{weight['URL']} | {weight['Clicks']} |" for weight in weights if weight['Clicks'] > 0.0))
+    return table_header + "\n" + "\n".join((f"| https://developer.mozilla.org/en-us/docs/{weight['URL']} | {weight['Impressions']} |" for weight in weights if weight['Impressions'] > 0.0))
+
 
 weights_data = open('./_Prediction.json').read()
 weights = json.loads(weights_data)

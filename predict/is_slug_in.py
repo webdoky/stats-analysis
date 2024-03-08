@@ -7,6 +7,7 @@ SECTIONS_IN = [
     "Web/SVG"
 ]
 
+
 def is_slug_in(slug):
     # return True
     for section in SECTIONS_IN:

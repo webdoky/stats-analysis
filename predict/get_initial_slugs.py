@@ -2,9 +2,11 @@ import glob
 
 from is_slug_in import is_slug_in
 
-def get_initial_slugs() -> list:    
+
+def get_initial_slugs() -> list:
     initial_slugs = []
-    markdown_glob = glob.glob('./translated-content/files/**/*.md', recursive=True)
+    markdown_glob = glob.glob(
+        './translated-content/files/**/*.md', recursive=True)
     for filepath in markdown_glob:
         content = open(filepath).read()
         frontmatter = content.split("---")[1]
@@ -13,4 +15,3 @@ def get_initial_slugs() -> list:
             continue
         initial_slugs.append(slug)
     return initial_slugs
-        
