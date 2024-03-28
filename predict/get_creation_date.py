@@ -18,4 +18,8 @@ print('creation date init done')
 
 
 def get_creation_date(slug: str) -> str | None:
-    return registry[slug] if slug in registry else None
+    creation_date = registry[slug] if slug in registry else None
+    # if creation_date is None:
+    #     raise ValueError(f"Creation date not found for {slug}")
+    print(f"Creation date for {slug}: {creation_date}")
+    return creation_date

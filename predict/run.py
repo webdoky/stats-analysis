@@ -10,6 +10,7 @@ from get_initial_slugs import get_initial_slugs
 from predict import create_ctr_model, predict_ctr
 
 THREE_MONTHS_AGO = str(datetime.now() - timedelta(days=90))
+print(THREE_MONTHS_AGO)
 
 registry = create_registry()
 
@@ -19,7 +20,10 @@ analytics = json.loads(analytics_data)
 stats = pd.DataFrame(analytics)
 # Remove pages newer than 3 months
 adjust_stats(registry, stats)
-stats = stats[stats["Date"] < THREE_MONTHS_AGO]
+# stats.drop(['Text'], axis='columns').to_csv(
+#     './_before_filter.csv', index=False)
+stats = stats[stats["Date"] is not None and stats["Date"] < THREE_MONTHS_AGO]
+# stats.drop(['Text'], axis='columns').to_csv('./_after_filter.csv', index=False)
 model = create_ctr_model(stats)
 stats.sort_values(by="Impressions", ascending=False, inplace=True)
 initial_slugs = get_initial_slugs()

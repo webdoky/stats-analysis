@@ -9,6 +9,8 @@ SECTIONS_IN = [
 
 
 def is_slug_in(slug):
+    if slug == "Web":
+        return True
     # return True
     for section in SECTIONS_IN:
         if slug.startswith(section):
